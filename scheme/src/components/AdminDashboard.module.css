@@ -1,0 +1,70 @@
+.adminContainer {
+  padding: 40px 0;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.cardContainer {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.adminCard {
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.3s ease-in-out;
+  height: 100%; /* Make all cards the same height */
+}
+
+.adminCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card {
+  height: 100%; /* Make all cards the same height */
+}
+
+.card img {
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 2px solid #ddd;
+}
+
+.card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-text {
+  flex-grow: 1; /* Ensures text aligns evenly */
+}
+
+.btn {
+  margin-top: auto; /* Ensures buttons are aligned at the bottom */
+}
+
+.text-center .btn-danger {
+  width: 200px; /* Set consistent width for logout button */
+}
+
+/* BIG DEMO MESSAGE */
+.demoMessage {
+  text-align: center;
+  background-color: #007bff;
+  color: white;
+  padding: 20px;
+  margin-top: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.demoMessage p {
+  font-size: 18px;
+  margin-top: 10px;
+  font-weight: normal;
+}

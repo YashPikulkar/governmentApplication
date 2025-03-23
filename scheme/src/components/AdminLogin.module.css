@@ -1,0 +1,25 @@
+.adminContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full screen height */
+  background-color: #f8f9fa;
+}
+
+.adminCard {
+  width: 500px; /* Increased width for a bigger card */
+  padding: 2.5rem; /* More padding for better spacing */
+  border-radius: 12px; /* Rounded corners */
+  background: white;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); /* Slightly stronger shadow */
+}
+
+.forgotPassword {
+  text-align: right;
+  font-size: 0.9rem;
+}
+
+.forgotPassword a {
+  text-decoration: none;
+  color: #007bff;
+}

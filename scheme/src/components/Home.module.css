@@ -1,0 +1,55 @@
+/* Carousel Styling */
+.carouselContainer {
+  width: 100%; /* Full width */
+  max-height: 400px; /* Increased height */
+  overflow: hidden; /* Prevents extra content from showing */
+  background-color: #f8f9fa;
+}
+
+/* Stretches images to fit the carousel fully */
+.carouselContainer img {
+  object-fit: fill; /* Stretches image to fill the entire space */
+  height: 400px; /* Increased height */
+  width: 100%;
+}
+
+/* Navigation Dots */
+.carousel-indicators button {
+  background-color: #007bff !important; /* Blue dots */
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50%;
+  margin: 3px;
+}
+
+/* Navigation Arrows */
+.carousel-control-prev,
+.carousel-control-next {
+  width: 5%; /* Ensures arrows are clickable */
+}
+
+/* Content Below Carousel */
+.contentSection {
+  padding: 40px 20px;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.contentSection h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.contentSection p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+.contentSection .btn {
+  margin-top: 10px;
+  font-size: 1rem;
+  padding: 10px 20px;
+}
