@@ -21,53 +21,82 @@ const ValidateApplications = () => {
   }, []);
 
   const updateApplicationStatus = (aadhaarNumber, newStatus) => {
-    let updatedApps = JSON.parse(localStorage.getItem("pendingForms")) || [];
-
-    // Update application status
-    updatedApps = updatedApps.map((app) =>
-      app.aadhaarNumber === aadhaarNumber ? { ...app, status: newStatus } : app
-    );
-
-    localStorage.setItem("pendingForms", JSON.stringify(updatedApps));
-
-    // Filter updated applications for current role
-    const newFilteredApps = updatedApps.filter((app) => {
-      if (currentRole === "JE") return app.status === "Pending JE Validation";
-      if (currentRole === "AE") return app.status === "Pending AE Validation";
-      if (currentRole === "EE") return app.status === "Pending EE Approval";
-      return false;
-    });
-
-    setApplications(newFilteredApps);
-  };
-
-  const handleFinalDecision = (aadhaarNumber, decision) => {
-    let updatedApps = JSON.parse(localStorage.getItem("pendingForms")) || [];
+    let pendingApps = JSON.parse(localStorage.getItem("pendingForms")) || [];
     let trackedApps = JSON.parse(localStorage.getItem("trackedForms")) || [];
 
     // Find the application
-    const appToUpdate = updatedApps.find(
+    const appToUpdate = pendingApps.find(
       (app) => app.aadhaarNumber === aadhaarNumber
     );
 
     if (!appToUpdate) return;
 
-    // Remove the application from pendingForms
-    updatedApps = updatedApps.filter(
-      (app) => app.aadhaarNumber !== aadhaarNumber
-    );
-    localStorage.setItem("pendingForms", JSON.stringify(updatedApps));
+    // Update status
+    appToUpdate.status = newStatus;
 
-    // If approved, move it to trackedForms
-    if (decision === "approve") {
-      appToUpdate.status = "Approved by EE"; // Final status
+    // Move to trackedForms if not already present
+    const existsInTracked = trackedApps.some(
+      (app) => app.aadhaarNumber === aadhaarNumber
+    );
+    if (!existsInTracked) {
       trackedApps.push(appToUpdate);
-      localStorage.setItem("trackedForms", JSON.stringify(trackedApps));
+    } else {
+      // Update the status in trackedForms too
+      trackedApps = trackedApps.map((app) =>
+        app.aadhaarNumber === aadhaarNumber
+          ? { ...app, status: newStatus }
+          : app
+      );
     }
 
-    // Update state to refresh UI
+    // Save changes
+    localStorage.setItem("pendingForms", JSON.stringify(pendingApps));
+    localStorage.setItem("trackedForms", JSON.stringify(trackedApps));
+
+    // Update UI
     setApplications(
-      updatedApps.filter((app) => app.status === "Pending EE Approval")
+      pendingApps.filter((app) => {
+        if (currentRole === "JE") return app.status === "Pending JE Validation";
+        if (currentRole === "AE") return app.status === "Pending AE Validation";
+        if (currentRole === "EE") return app.status === "Pending EE Approval";
+        return false;
+      })
+    );
+
+    // 🔥 Trigger event to update `Track.jsx`
+    window.dispatchEvent(new Event("storage"));
+  };
+
+  const handleFinalDecision = (aadhaarNumber, decision) => {
+    let pendingApps = JSON.parse(localStorage.getItem("pendingForms")) || [];
+    let trackedApps = JSON.parse(localStorage.getItem("trackedForms")) || [];
+
+    // Find the application
+    const appToUpdate = pendingApps.find(
+      (app) => app.aadhaarNumber === aadhaarNumber
+    );
+    if (!appToUpdate) return;
+
+    // Remove the application from pendingForms
+    pendingApps = pendingApps.filter(
+      (app) => app.aadhaarNumber !== aadhaarNumber
+    );
+    localStorage.setItem("pendingForms", JSON.stringify(pendingApps));
+
+    // Update status in trackedForms
+    appToUpdate.status =
+      decision === "approve" ? "Approved by EE" : "Rejected by EE";
+    trackedApps = trackedApps.map((app) =>
+      app.aadhaarNumber === aadhaarNumber
+        ? { ...app, status: appToUpdate.status }
+        : app
+    );
+
+    localStorage.setItem("trackedForms", JSON.stringify(trackedApps));
+
+    // Update UI
+    setApplications(
+      pendingApps.filter((app) => app.status === "Pending EE Approval")
     );
 
     // 🔥 Trigger event so `Track.jsx` updates
