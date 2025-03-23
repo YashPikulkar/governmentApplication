@@ -12,7 +12,7 @@ const Track = () => {
   useEffect(() => {
     loadApplications();
 
-    // Listen for storage updates
+    // Listen for localStorage updates
     const handleStorageChange = () => {
       loadApplications();
     };
